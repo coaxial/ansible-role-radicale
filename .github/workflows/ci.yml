@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout codebase
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Run ansible-lint
         uses: ansible/ansible-lint-action@v6
@@ -30,7 +30,7 @@ jobs:
           - ubuntu2204
     steps:
       - name: Checkout codebase
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Python 3
         uses: actions/setup-python@v2
