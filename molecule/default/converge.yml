@@ -1,8 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: false
   tasks:
-    - name: "Include coaxial.radicale"
+    - name: "Include coaxial.servarr"
       ansible.builtin.include_role:
-        name: "coaxial.radicale"
+        name: "coaxial.servarr"
