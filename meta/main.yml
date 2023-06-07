@@ -11,8 +11,8 @@ galaxy_info:
   platforms:
     - name: ubuntu
       versions:
-        - focal
-        - jammy
+        - "20.04"
+        - "22.04"
 
   galaxy_tags: [radicale, caldav, cardav, calendar]
 
