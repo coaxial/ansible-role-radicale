@@ -1,2 +1,71 @@
 ---
-# tasks file for radicale
+- name: Create radicale user
+  ansible.builtin.user:
+    name: radicale
+    comment: System user for Radicale
+    shell: /sbin/nologin
+    password: '!'
+    system: yes
+    state: present
+
+- name: Create radicale collections dir
+  ansible.builtin.file:
+    # TODO: use a var
+    path: /var/lib/radicale/collections
+    owner: radicale
+    group: radicale
+    mode: '0700'
+    state: directory
+
+- name: Create config dir
+  ansible.builtin.file:
+    path: /etc/radicale
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: Install Radicale and deps
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    executable: pip3
+    state: present
+  with_items:
+    # TODO: make version overridable via variable
+    - radicale
+    - radicale[bcrypt]
+  notify:
+    - Restart Radicale
+
+- name: Copy configuration file
+  ansible.builtin.template:
+    src: radicale/config.j2
+    # TODO: make this a variable with default fallback
+    dest: /etc/radicale/config
+    owner: root
+    group: root
+    mode: '0640'
+  notify:
+    - Restart Radicale
+
+- name: Create users file
+  community.general.htpasswd:
+    path: /etc/radicale/users
+    # TODO: make this a variable with default fallback
+    name: user
+    # TODO: make this a variable with default fallback
+    password: 'changeme'
+    owner: root
+    group: root
+    mode: '0640'
+    crypt_scheme: bcrypt
+
+- name: Copy service file
+  ansible.builtin.template:
+    src: radicale/radicale.service.j2
+    dest: /etc/systemd/system/radicale.service
+    owner: root
+    group: root
+    mode: '0755'
+  notify:
+    - Restart Radicale

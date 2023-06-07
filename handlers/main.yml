@@ -1,2 +1,7 @@
 ---
-# handlers file for radicale
+- name: Restart Radicale
+  ansible.builtin.service:
+    name: radicale
+    daemon_reload: yes
+    enabled: yes
+    state: restarted

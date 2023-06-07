@@ -1,0 +1,15 @@
+# vi: ft=toml
+[server]
+# TODO: Use a var
+hosts = 0.0.0.0:5232, [::]:5232
+max_connections = 20
+max_content_length = 100000000 # 100 MiB
+timeout = 30 # seconds
+[storage]
+# TODO: Use a var
+filesystem_folder = /var/lib/radicale/collections
+[auth]
+delay = 1 # seconds
+type = htpasswd
+htpasswd_filename = /etc/radicale/users
+htpasswd_encryption = bcrypt
