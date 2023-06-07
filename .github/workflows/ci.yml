@@ -17,21 +17,8 @@ jobs:
       - name: Checkout codebase
         uses: actions/checkout@v2
 
-      - name: Setup Python 3
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.x"
-
-      - name: Install dependencies
-        run: pip3 install -r requirements.txt
-
-      - name: Show versions
-        run: |
-          molecule --version
-          ansible-lint --version
-
-      - name: Lint code
-        run: make lint
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint-action@v6
 
   test:
     name: Test
