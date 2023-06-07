@@ -9,7 +9,7 @@ galaxy_info:
   min_ansible_version: "2.13"
 
   platforms:
-    - name: ubuntu
+    - name: Ubuntu
       versions:
         - "20.04"
         - "22.04"
