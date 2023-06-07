@@ -1,7 +1,6 @@
 ansible
+ansible-core
 ansible-lint
-flake8
-molecule-docker
 molecule
+molecule-plugins[docker]
 pytest-testinfra
-yamllint
