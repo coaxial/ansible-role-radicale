@@ -1,0 +1,3 @@
+# vi: ft=yaml
+exclude_paths:
+  - molecule
