@@ -4,10 +4,9 @@ max_connections = 20
 max_content_length = 100000000 # 100 MiB
 timeout = 30 # seconds
 [storage]
-# TODO: Use a var
-filesystem_folder = /var/lib/radicale/collections
+filesystem_folder = {{ radicale__collections_dir }}
 [auth]
 delay = 1 # seconds
 type = htpasswd
-htpasswd_filename = /etc/radicale/users
+htpasswd_filename = {{ radicale__users_file }}
 htpasswd_encryption = bcrypt

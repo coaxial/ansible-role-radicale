@@ -10,10 +10,9 @@
 
 - name: Create radicale collections dir
   ansible.builtin.file:
-    # TODO: use a var
-    path: /var/lib/radicale/collections
-    owner: radicale
-    group: radicale
+    path: "{{ radicale__collections_dir }}"
+    owner: "{{ radicale__service_user }}"
+    group: "{{ radicale__service_user }}"
     mode: '0700'
     state: directory
 
@@ -27,21 +26,22 @@
 
 - name: Install Radicale and deps
   ansible.builtin.pip:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
     executable: pip3
     state: present
   with_items:
-    # TODO: make version overridable via variable
-    - radicale
-    - radicale[bcrypt]
+    - name: radicale
+      version: "{{ radicale__version }}"
+    - name: radicale[bcrypt]
+      version: ''
   notify:
     - Restart Radicale
 
 - name: Copy configuration file
   ansible.builtin.template:
     src: radicale/config.j2
-    # TODO: make this a variable with default fallback
-    dest: /etc/radicale/config
+    dest: "{{ radicale__config_file }}"
     owner: root
     group: root
     mode: '0640'
@@ -50,15 +50,14 @@
 
 - name: Create users file
   community.general.htpasswd:
-    path: /etc/radicale/users
-    # TODO: make this a variable with default fallback
-    name: user
-    # TODO: make this a variable with default fallback
-    password: 'changeme'
+    path: "{{ radicale__users_file }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
     owner: root
     group: root
     mode: '0640'
     crypt_scheme: bcrypt
+  with_items: "{{ radicale__users }}"
 
 - name: Copy service file
   ansible.builtin.template:

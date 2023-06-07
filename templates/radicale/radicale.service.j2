@@ -7,8 +7,7 @@ Requires=network.target
 [Service]
 ExecStart=/usr/bin/env python3 -m radicale
 Restart=on-failure
-# TODO: use var
-User=radicale
+User={{ radicale__service_user }}
 # Deny other users access to the calendar data
 UMask=0027
 # Optional security settings
@@ -20,8 +19,7 @@ ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
 NoNewPrivileges=true
-# TODO: use var
-ReadWritePaths=/var/lib/radicale/collections
+ReadWritePaths={{ radicale__collections_dir }}
 
 [Install]
 WantedBy=multi-user.target
