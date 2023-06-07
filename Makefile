@@ -10,4 +10,4 @@ debug:
 	@docker exec -it ubuntu2004 bash
 
 lint:
-	@PY_COLORS=1 ansible-lint
+	@PY_COLORS=1 ansible-lint .
