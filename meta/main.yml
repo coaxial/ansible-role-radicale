@@ -16,4 +16,4 @@ galaxy_info:
 
   galaxy_tags: [radicale, caldav, cardav, calendar]
 
-dependencies: []
+dependencies: [nginxinc.nginx]

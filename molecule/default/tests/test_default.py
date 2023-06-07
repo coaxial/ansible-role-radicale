@@ -42,3 +42,9 @@ def test_web_ui(host):
     html = host.run('curl -L http://localhost:5232').stdout
 
     assert '<title>Radicale Web Interface</title>' in html
+
+
+def test_reverse_proxy(host):
+    html = host.run('curl -L http://localhost/radicale').stdout
+
+    assert '<title>Radicale Web Interface</title>' in html

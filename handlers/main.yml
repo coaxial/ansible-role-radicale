@@ -5,3 +5,8 @@
     daemon_reload: yes
     enabled: yes
     state: restarted
+
+- name: Restart NGINX
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
