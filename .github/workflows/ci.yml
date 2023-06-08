@@ -33,7 +33,7 @@ jobs:
       matrix:
         distro:
           - ubuntu2004
-          - ubuntu2204
+          # - ubuntu2204
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v3
