@@ -1,0 +1,12 @@
+# vi: ft=toml
+[server]
+max_connections = 20
+max_content_length = 100000000 # 100 MiB
+timeout = 30 # seconds
+[storage]
+filesystem_folder = {{ radicale__collections_dir }}
+[auth]
+delay = 1 # seconds
+type = htpasswd
+htpasswd_filename = {{ radicale__users_file }}
+htpasswd_encryption = bcrypt

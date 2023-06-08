@@ -1,2 +1,102 @@
 ---
-# tasks file for radicale
+- name: Create radicale user
+  ansible.builtin.user:
+    name: radicale
+    comment: System user for Radicale
+    shell: /sbin/nologin
+    password: '!'
+    system: yes
+    state: present
+
+- name: Create radicale collections dir
+  ansible.builtin.file:
+    path: "{{ radicale__collections_dir }}"
+    owner: "{{ radicale__service_user }}"
+    group: "{{ radicale__service_user }}"
+    mode: '0700'
+    state: directory
+
+- name: Create config dir
+  ansible.builtin.file:
+    path: /etc/radicale
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: Install Radicale and deps
+  ansible.builtin.pip:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    executable: pip3
+    state: present
+  with_items:
+    - name: radicale
+      version: "{{ radicale__version }}"
+    - name: radicale[bcrypt]
+      version: ''
+  notify:
+    - Restart Radicale
+
+- name: Copy configuration file
+  ansible.builtin.template:
+    src: radicale/config.j2
+    dest: "{{ radicale__config_file }}"
+    owner: root
+    group: root
+    mode: '0640'
+  notify:
+    - Restart Radicale
+
+- name: Create users file
+  community.general.htpasswd:
+    path: "{{ radicale__users_file }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    owner: root
+    group: root
+    mode: '0640'
+    crypt_scheme: bcrypt
+  with_items: "{{ radicale__users }}"
+
+- name: Copy service file
+  ansible.builtin.template:
+    src: radicale/radicale.service.j2
+    dest: /etc/systemd/system/radicale.service
+    owner: root
+    group: root
+    mode: '0755'
+  notify:
+    - Restart Radicale
+
+- name: Create NGINX enabled sites directory
+  ansible.builtin.file:
+    path: /etc/nginx/enabled
+    state: directory
+    mode: "0644"
+    owner: root
+    group: root
+  notify:
+    - Restart NGINX
+
+- name: Remove default site
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+  notify:
+    - Restart NGINX
+
+- name: Configure NGINX for Radicale
+  ansible.builtin.copy:
+    src: "{{ item.file }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+    owner: root
+    group: root
+  with_items:
+    - file: nginx-radicale.conf
+      dest: /etc/nginx/enabled/radicale.conf
+    - file: nginx.conf
+      dest: /etc/nginx/nginx.conf
+  notify:
+    - Restart NGINX

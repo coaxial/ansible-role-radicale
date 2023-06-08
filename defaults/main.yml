@@ -1,2 +1,10 @@
 ---
-# defaults file for radicale
+radicale__collections_dir: /var/lib/radicale/collections
+radicale__config_dir: /etc/radicale
+radicale__config_file: "{{ radicale__config_dir }}/config"
+radicale__users_file: "{{ radicale__config_dir }}/users"
+radicale__version: 3.1.8
+radicale__service_user: radicale
+radicale__users:
+  - name: radicale
+    password: radicale
