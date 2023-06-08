@@ -44,7 +44,6 @@ jobs:
         run: |
           molecule --version
           ansible --version
-          flake8 --version
           yamllint --version
           pip show pytest-testinfra
 
