@@ -1,8 +1,8 @@
 ansible
 ansible-core
-ansible-lint
+# See https://github.com/ansible-community/molecule/issues/3903
+# ansible-lint
 flake8
 molecule
-molecule-docker
 molecule-plugins[docker]
 pytest-testinfra
