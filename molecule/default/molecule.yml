@@ -6,6 +6,7 @@ driver:
 platforms:
   - name: ${MOLECULE_DISTRO:-ubuntu2004}
     image: geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest
+    cgroupns_mode: host
     command: ""
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
